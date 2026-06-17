@@ -8,6 +8,8 @@ public class Jogador : MonoBehaviour
     public Rigidbody2D rb;
     public AudioSource audioSource;
     public LayerMask chaoLayer;
+    public Animator animator;
+    public float distaciaColisao = 1f;
     public float velocidade = 4f;
     public float jumpForce = 10f;
 
@@ -21,15 +23,22 @@ public class Jogador : MonoBehaviour
         transform.position =
             transform.position + new Vector3(xDeslocamento, 0f, 0f);
 
-        RaycastHit2D hit = 
+        animator.SetFloat("VelocidadeY", rb.linearVelocity.y);
+        animator.SetBool("Correr", horizontal != 0);
+
+        RaycastHit2D noChao = 
             Physics2D.Raycast(
                 transform.position, 
                 Vector2.down, 
-                1f, 
+                distaciaColisao, 
                 chaoLayer
             );
 
-        if (hit == true && Input.GetButtonDown("Jump"))
+        Debug.DrawLine(transform.position, transform.position + Vector3.down * distaciaColisao, Color.red, 5f);
+
+        animator.SetBool("NoChao", noChao);
+
+        if (noChao == true && Input.GetButtonDown("Jump"))
         {
             Vector2 velocity = rb.linearVelocity;
             velocity.y = 0f;
@@ -38,6 +47,8 @@ public class Jogador : MonoBehaviour
 
             rb.AddForce(Vector2.up * jumpForce);
             audioSource.Play();
+
+            animator.SetTrigger("Pulo");
         }
 
         if (olhandoParaDireita == true && horizontal < 0f)
