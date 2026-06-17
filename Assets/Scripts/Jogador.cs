@@ -34,9 +34,6 @@ public class Jogador : MonoBehaviour
                 chaoLayer
             );
 
-        Debug.DrawLine(transform.position, transform.position + Vector3.down * distaciaColisao, Color.red, 5f);
-
-        animator.SetBool("NoChao", noChao);
 
         if (noChao == true && Input.GetButtonDown("Jump"))
         {
@@ -45,7 +42,9 @@ public class Jogador : MonoBehaviour
 
             rb.linearVelocity = velocity;
 
-            rb.AddForce(Vector2.up * jumpForce);
+            float newJumpForce = jumpForce;
+
+            rb.AddForce(Vector2.up * newJumpForce);
             audioSource.Play();
 
             animator.SetTrigger("Pulo");

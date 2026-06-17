@@ -8,11 +8,6 @@ public class ControladorDeMoedas : MonoBehaviour
 
     private int moedas = 0;
 
-    void Start()
-    {
-        text.SetText("5");
-    }
-
     public void MoedaColetada()
     {
         moedas++;
